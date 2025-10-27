@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+  db_ta:
+    image: mysql:8.0
+    container_name: db_ta
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db_ta
+      MYSQL_USER: db_ta_user
+      MYSQL_PASSWORD: db_ta_044$
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db_ta.sql:/docker-entrypoint-initdb.d/db_ta.sql
+      - mysql_data:/var/lib/mysql
+
+  backend_app:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    container_name: backend_app
+    restart: always
+    depends_on:
+      - db_ta
+    volumes:
+      - ./back-end:/var/www/html
+      - /var/www/html/vendor
+    working_dir: /var/www/html
+    command: >
+      bash -c "
+        if [ ! -f .env ]; then
+          cp .env.example .env
+          sed -i 's/DB_HOST=.*/DB_HOST=db_ta/' .env
+          sed -i 's/DB_DATABASE=.*/DB_DATABASE=db_ta/' .env
+          sed -i 's/DB_USERNAME=.*/DB_USERNAME=db_ta_user/' .env
+          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=db_ta_044\$/' .env
+          php artisan config:clear
+        fi
+        php artisan serve --host=0.0.0.0 --port=8000
+      "
+    ports:
+      - "8080:8000"
+
+  frontend_app:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    container_name: frontend_app
+    depends_on:
+      - backend_app
+    volumes:
+      - ./front-end:/app
+    environment:
+      VITE_BACK_END_URL: http://localhost:8080
+      VITE_APP_VERSION: 1.0.0
+    ports:
+      - "5050:5173"
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
