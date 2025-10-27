@@ -84,14 +84,14 @@ class UserController extends Controller
 
             return response()
                 ->json([
-                    "message" => "Gejala berhasil disimpan",
+                    "message" => "Pengguna berhasil disimpan",
                 ]);
 
         } catch (\Exception $e) {
 
             DB::rollBack();
             return response()->json([
-                "message" => "Gagal menambahkan gejala",
+                "message" => "Gagal menambahkan pengguna",
                 "error" => $e->getMessage(),
             ], 400);
         }
@@ -110,14 +110,14 @@ class UserController extends Controller
 
             return response()
                 ->json([
-                    "message" => "Akun berhasil dihapus",
+                    "message" => "Pengguna berhasil dihapus",
                 ]);
 
         } catch (\Exception $e) {
 
             DB::rollBack();
             return response()->json([
-                "message" => "Gagal menghapus akun",
+                "message" => "Gagal menghapus pengguna",
                 "error" => $e->getMessage(),
             ], 500);
         }
