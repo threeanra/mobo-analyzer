@@ -26,20 +26,6 @@ services:
       - db_ta
     volumes:
       - ./back-end:/var/www/html
-      - /var/www/html/vendor
-    working_dir: /var/www/html
-    command: >
-      bash -c "
-        if [ ! -f .env ]; then
-          cp .env.example .env
-          sed -i 's/DB_HOST=.*/DB_HOST=db_ta/' .env
-          sed -i 's/DB_DATABASE=.*/DB_DATABASE=db_ta/' .env
-          sed -i 's/DB_USERNAME=.*/DB_USERNAME=db_ta_user/' .env
-          sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=db_ta_044\$/' .env
-          php artisan config:clear
-        fi
-        php artisan serve --host=0.0.0.0 --port=8000
-      "
     ports:
       - "8080:8000"
 
@@ -57,7 +43,7 @@ services:
       VITE_APP_VERSION: 1.0.0
     ports:
       - "5050:5173"
-    restart: unless-stopped
+    restart: always
 
 volumes:
   mysql_data:

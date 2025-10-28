@@ -20,7 +20,11 @@ EXPOSE 8000
 CMD bash -c "composer install --no-interaction --prefer-dist && \
     if [ ! -f .env ]; then \
         cp .env.example .env && \
+        sed -i 's/DB_HOST=.*/DB_HOST=db_ta/' .env && \
+        sed -i 's/DB_DATABASE=.*/DB_DATABASE=db_ta/' .env && \
+        sed -i 's/DB_USERNAME=.*/DB_USERNAME=db_ta_user/' .env && \
+        sed -i 's/DB_PASSWORD=.*/DB_PASSWORD=db_ta_044\$/' .env && \
         php artisan key:generate && \
-        php artisan migrate --force || true; \
+        php artisan config:clear; \
     fi && \
     php artisan serve --host=0.0.0.0 --port=8000"
