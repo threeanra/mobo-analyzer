@@ -27,7 +27,7 @@ To run the project, ensure that Docker is installed on your local machine, then 
     ```
 3. Build and run the services using Docker:
     ```sh
-    docker-compose up --build
+    docker compose up --build
     ```
 Note: When the message "App running successfully" appears, you can access the app through here:
 ```sh
