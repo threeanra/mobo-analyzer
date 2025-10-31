@@ -45,5 +45,19 @@ services:
       - "5050:5173"
     restart: always
 
+  notifier:
+    image: curlimages/curl
+    container_name: app_notifier
+    depends_on:
+      - frontend_app
+    command: >
+      sh -c "
+        until curl -s http://backend_app:8000 > /dev/null; do sleep 2; done;
+        until curl -s http://frontend_app:5173 > /dev/null; do sleep 2; done;
+        echo '';
+        echo '✅ App running successfully!';
+        echo '🌐 Open http://localhost:5050 in your browser';
+      "
+
 volumes:
   mysql_data:
