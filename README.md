@@ -14,7 +14,7 @@ This project is built with React.js & Laravel (API Driven)
 - Docker as Containerization
 - and more.
 
-## Getting Started
+## ⚠️ Getting Started [Development Mode]
 To run the project, ensure that Docker is installed on your local machine, then follow these steps:
 
 1. Clone the repository:
@@ -29,6 +29,10 @@ To run the project, ensure that Docker is installed on your local machine, then 
     ```sh
     docker-compose up --build
     ```
+Note: When the message "App running successfully" appears, you can access the app through here:
+```sh
+http://localhost:5050
+```
 
 ## Login Account
 ```json 
